@@ -1,0 +1,19 @@
+version: '1'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: shalon123
+      POSTGRES_DB: dblog
+    ports:
+      - "5432:5432"
+  dblog:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/dblog
+      SPRING_DATASOURCE_PASSWORD: shalon123
