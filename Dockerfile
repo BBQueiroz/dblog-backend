@@ -11,4 +11,4 @@ FROM eclipse-temurin:latest
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY --from=build /usr/src/app/target/dblog-0.0.1-SNAPSHOT.jar dblog.jar
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "dblog.jar"]
