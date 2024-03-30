@@ -14,7 +14,7 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedOrigins(List.of("https://dblog-angular-swart.vercel.app"));
         config.setAllowCredentials(true);
         config.addAllowedHeader("*");
         config.addAllowedMethod("GET");
