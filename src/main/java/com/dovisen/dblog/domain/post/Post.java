@@ -33,7 +33,6 @@ public class Post {
     @Column(name = "id", updatable = false, unique = true, nullable = false)
     private UUID id;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "login")
     @JsonSerialize(using = UserSerializer.class)
@@ -46,14 +45,29 @@ public class Post {
     private String content;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    private List<LocalDateTime> histPost;
+    private LocalDateTime data;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private Post parent;
+
+
+    private int qtd_likes;
+
+    @ManyToMany
+    @JoinTable(
+            name = "post_likes",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> likes_list;
 
     public Post(PostDTO postDTO){
         this.user = postDTO.user();
         this.title = postDTO.title();
         this.content = postDTO.content();
-        this.histPost = new ArrayList<>();
-        this.histPost.add(LocalDateTime.now());
+        this.data = LocalDateTime.now();
+        this.parent = postDTO.parent();
     }
 
 }

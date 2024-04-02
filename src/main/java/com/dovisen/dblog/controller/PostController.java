@@ -44,14 +44,14 @@ public class PostController {
 
     @GetMapping
     @PermitAll
-    public ResponseEntity<List<Post>> getAllPosts(){
+    public ResponseEntity<List<Post>> getTopNPosts(@RequestParam(defaultValue = "10") int limit){
         List<Post> posts = postService.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getOnePlaylist(@PathVariable(value = "id") UUID id){
-        Post post = new Post();
+    public ResponseEntity<Object> getOnePost(@PathVariable(value = "id") UUID id){
+        Post post;
 
         try{
             post = postService.findById(id);
