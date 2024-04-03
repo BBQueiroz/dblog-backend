@@ -42,6 +42,7 @@ public class Post {
     private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
+    @Lob
     private String content;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -51,7 +52,7 @@ public class Post {
     @JoinColumn(name = "parent_id")
     private Post parent;
 
-
+    @Column(nullable = true)
     private int qtd_likes;
 
     @ManyToMany

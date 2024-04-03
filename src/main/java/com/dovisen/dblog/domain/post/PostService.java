@@ -34,7 +34,7 @@ public class PostService {
         return postRepository.existsByTitle(title);
     }
 
-    public List<Post> findAll() { return postRepository.findAll().stream().filter( post -> post.getParent() == null).collect(Collectors.toList()); }
+    public List<Post> findAll() { return postRepository.findAll(); }
 
     public List<Post> findTopNPost(int limit){
         Pageable pageable = (Pageable) PageRequest.of(0, limit);
