@@ -24,7 +24,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProfileDTO> getProfileDetails(@PathVariable UUID id){
+    public ResponseEntity<ProfileDTO> getProfileDetails(@PathVariable(value = "id") UUID id){
 
         ProfileDTO profileDTO = this.profileService.getProfile(id);
 
@@ -32,7 +32,7 @@ public class ProfileController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateProfile(@PathVariable UUID id, @RequestBody ProfileDTO profileDTO){
+    public ResponseEntity<User> updateProfile(@PathVariable(value = "id") UUID id, @RequestBody ProfileDTO profileDTO){
         User updatedUser = this.profileService.updateProfile(id, profileDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);

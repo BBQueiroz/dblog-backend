@@ -61,8 +61,15 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(post);
     }
 
+    @GetMapping("/{parentId}/comments")
+    public ResponseEntity<List<Post>> getComments(@PathVariable(value="parentId") UUID parentId){
+        List<Post> comments = this.postService.findComments(parentId);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(comments);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deletePlaylist(@PathVariable(value = "id") UUID id){
+    public ResponseEntity<Object> deletePost(@PathVariable(value = "id") UUID id){
         try {
             postService.delete(id);
         } catch (NullPointerException e){
