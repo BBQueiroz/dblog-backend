@@ -39,7 +39,7 @@ public class PostController {
                 .path("/{id}")
                 .buildAndExpand(savedPost.getId())
                 .toUri();
-        return ResponseEntity.status(HttpStatus.CREATED).body("201 Created");
+        return ResponseEntity.created(location).body(savedPost);
     }
 
     @GetMapping
@@ -65,8 +65,9 @@ public class PostController {
     public ResponseEntity<List<Post>> getComments(@PathVariable(value="parentId") UUID parentId){
         List<Post> comments = this.postService.findComments(parentId);
 
-        return ResponseEntity.status(HttpStatus.FOUND).body(comments);
+        return ResponseEntity.status(HttpStatus.OK).body(comments);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePost(@PathVariable(value = "id") UUID id){

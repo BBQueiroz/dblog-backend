@@ -27,6 +27,7 @@ public class PostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Post post = new Post(postDTO);
         post.setUser((User) userRepository.findByLogin(authentication.getName()));
+        post.setParent(postRepository.findById(postDTO.parent()).get());
         return postRepository.save(post);
     }
 
@@ -34,7 +35,7 @@ public class PostService {
         return postRepository.existsByTitle(title);
     }
 
-    public List<Post> findAll() { return postRepository.findAll(); }
+    public List<Post> findAll() { return postRepository.findAll().stream().filter(post -> post.getParent() == null).collect(Collectors.toList()); }
 
     public List<Post> findTopNPost(int limit){
         Pageable pageable = (Pageable) PageRequest.of(0, limit);
@@ -42,7 +43,7 @@ public class PostService {
     }
 
     public List<Post> findComments(UUID id){
-        return postRepository.findByParentId(id);
+        return postRepository.findAll().stream().filter(post -> post.getParent() != null && post.getParent() == postRepository.findById(id).get()).collect(Collectors.toList());
     }
     public void delete(UUID uuid){
         if(!postRepository.existsById(uuid)) throw new NullPointerException("404 Not Found");
@@ -54,6 +55,9 @@ public class PostService {
     }
 
     public Post findById(UUID id) {
-        if(!existsById(id)) throw new NullPointerException("404 Not Found");
-        return postRepository.findById(id).get(); }
+        if (postRepository.findById(id).isEmpty()){
+            throw new NullPointerException("Não encontrado");
+        }
+        return postRepository.findById(id).get();
+    }
 }

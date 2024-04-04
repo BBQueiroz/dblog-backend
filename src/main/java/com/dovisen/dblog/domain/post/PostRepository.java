@@ -14,7 +14,10 @@ import java.util.UUID;
 @Table
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    List<Post> findByParentId(UUID id);
+    List<Post> findAllByParentId(UUID id);
     List<Post> findTopNByData(Pageable pageable);
+
+    Post findByParentId(UUID uuid);
+
     boolean existsByTitle(String title);
 }
