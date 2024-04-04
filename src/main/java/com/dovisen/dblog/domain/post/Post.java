@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,5 +63,7 @@ public class Post {
         this.title = postDTO.title();
         this.content = postDTO.content();
         this.data = LocalDateTime.now();
+        this.qtd_likes = 0;
+        this.likes_list = new ArrayList<>();
     }
 }
