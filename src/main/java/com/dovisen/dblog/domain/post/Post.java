@@ -46,7 +46,7 @@ public class Post {
     @JoinColumn(name = "parent_id")
     private Post parent;
 
-    @Column(nullable = true)
+    @Column
     private int qtd_likes;
 
     @ManyToMany
