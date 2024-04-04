@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -77,6 +78,9 @@ public class User implements UserDetails {
         this.password = encryptedPassword;
         this.role = role;
     }
+
+    @ManyToMany(mappedBy = "likes_list")
+    private List<Post> likedPosts = new ArrayList<>();
 
     @Override
     public String getPassword() {
