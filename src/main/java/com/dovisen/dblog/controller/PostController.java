@@ -71,7 +71,7 @@ public class PostController {
     @PostMapping("/{id}/like")
     public ResponseEntity<Post> changeLike(@PathVariable(value="id") UUID id){
         Post post = this.postService.changeLike(id);
-        
+
         return ResponseEntity.status(HttpStatus.OK).body(post);
     }
 

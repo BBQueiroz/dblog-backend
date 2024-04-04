@@ -59,6 +59,9 @@ public class PostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
         List<User> listUser = post.getLikes_list();
+        if(post.getQtd_likes() == null){
+            post.setQtd_likes(0);
+        }
         if(listUser.contains((User) userRepository.findByLogin(authentication.getName()))){
             post.setQtd_likes(post.getQtd_likes() - 1);
             listUser.remove((User) userRepository.findByLogin(authentication.getName()));
