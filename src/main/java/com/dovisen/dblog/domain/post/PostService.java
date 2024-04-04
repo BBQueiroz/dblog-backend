@@ -27,7 +27,9 @@ public class PostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Post post = new Post(postDTO);
         post.setUser((User) userRepository.findByLogin(authentication.getName()));
-        post.setParent(postRepository.findById(postDTO.parent()).get());
+        if(postDTO.parent() != null) {
+            post.setParent(postRepository.findById(postDTO.parent()).get());
+        }
         return postRepository.save(post);
     }
 
