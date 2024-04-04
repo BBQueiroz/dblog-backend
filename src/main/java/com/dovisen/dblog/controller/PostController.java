@@ -68,6 +68,12 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(comments);
     }
 
+    @PostMapping("/{id}/like")
+    public ResponseEntity<Post> changeLike(@PathVariable(value="id") UUID id){
+        Post post = this.postService.changeLike(id);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(post);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePost(@PathVariable(value = "id") UUID id){
@@ -76,6 +82,6 @@ public class PostController {
         } catch (NullPointerException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("204 No Content");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Post não encontrado");
     }
 }   

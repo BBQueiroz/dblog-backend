@@ -55,6 +55,44 @@ public class PostService {
     public Boolean existsById(UUID id){
         return postRepository.existsById(id);
     }
+    public Post changeLike(UUID id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        List<User> listUser = post.getLikes_list();
+        if(listUser.contains((User) userRepository.findByLogin(authentication.getName()))){
+            post.setQtd_likes(post.getQtd_likes() - 1);
+            listUser.remove((User) userRepository.findByLogin(authentication.getName()));
+
+            return post;
+        }
+        post.setQtd_likes(post.getQtd_likes() + 1);
+        listUser.add((User) userRepository.findByLogin(authentication.getName()));
+
+        return post;
+    }
+    public Post addLike(UUID id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+
+        post.setQtd_likes(post.getQtd_likes() + 1);
+        List<User> listUser = post.getLikes_list();
+        listUser.add((User) userRepository.findByLogin(authentication.getName()));
+        post.setLikes_list(listUser);
+
+        return post;
+    }
+    public Post removeLike(UUID id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+
+        post.setQtd_likes(post.getQtd_likes() - 1);
+        List<User> listUser = post.getLikes_list();
+        listUser.remove((User) userRepository.findByLogin(authentication.getName()));
+        post.setLikes_list(listUser);
+
+        return post;
+    }
+
 
     public Post findById(UUID id) {
         if (postRepository.findById(id).isEmpty()){
