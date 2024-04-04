@@ -48,7 +48,7 @@ public class Post {
     private Post parent;
 
     @Column
-    private int qtd_likes;
+    private Integer qtd_likes;
 
     @ManyToMany
     @JoinTable(
