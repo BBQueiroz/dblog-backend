@@ -3,6 +3,7 @@ package com.dovisen.dblog.domain.post;
 
 import com.dovisen.dblog.domain.user.User;
 import com.dovisen.dblog.domain.user.UserSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -50,6 +51,7 @@ public class Post {
     @Column
     private Integer qtd_likes;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany
     @JoinTable(
             name = "post_likes",
