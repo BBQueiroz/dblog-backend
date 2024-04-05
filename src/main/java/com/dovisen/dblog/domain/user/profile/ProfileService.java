@@ -21,9 +21,8 @@ public class ProfileService {
 
         return new ProfileDTO(user.getNickname(), user.getPosts(), user.getEmail(), user.getBirthday(), user.getBiography());
     }
-    public User updateProfile(UUID id, ProfileDTO profileDTO){
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+    public User updateProfile(String login, ProfileDTO profileDTO){
+        User existingUser = (User) userRepository.findByLogin(login);
 
         BeanUtils.copyProperties(profileDTO, existingUser);
         return userRepository.save(existingUser);

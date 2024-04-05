@@ -28,9 +28,9 @@ public class ProfileController {
         return  ResponseEntity.status(HttpStatus.OK).body(profileDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateProfile(@PathVariable(value = "id") UUID id, @RequestBody ProfileDTO profileDTO){
-        User updatedUser = this.profileService.updateProfile(id, profileDTO);
+    @PutMapping("/{login}")
+    public ResponseEntity<User> updateProfile(@PathVariable(value = "login") String login, @RequestBody ProfileDTO profileDTO){
+        User updatedUser = this.profileService.updateProfile(login, profileDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
