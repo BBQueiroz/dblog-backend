@@ -16,12 +16,10 @@ public class ProfileService {
         this.userRepository = userRepository;
     }
 
-    public ProfileDTO getProfile(UUID uuid){
-        Optional<User> user = this.userRepository.findById(uuid);
-        ProfileDTO profileDTO = new ProfileDTO(user.get().getNickname(), user.get().getPosts(), user.get().getEmail(), user.get().getBirthday(), user.get().getBiography());
-        BeanUtils.copyProperties(user, profileDTO);
+    public ProfileDTO getProfile(String login){
+        User user = (User) this.userRepository.findByLogin(login);
 
-        return profileDTO;
+        return new ProfileDTO(user.getNickname(), user.getPosts(), user.getEmail(), user.getBirthday(), user.getBiography());
     }
     public User updateProfile(UUID id, ProfileDTO profileDTO){
         User existingUser = userRepository.findById(id)

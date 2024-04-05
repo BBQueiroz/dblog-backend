@@ -1,11 +1,8 @@
 package com.dovisen.dblog.controller;
 
-import com.dovisen.dblog.domain.user.AuthenticationService;
 import com.dovisen.dblog.domain.user.User;
 import com.dovisen.dblog.domain.user.profile.ProfileDTO;
-import com.dovisen.dblog.domain.user.UserRepository;
 import com.dovisen.dblog.domain.user.profile.ProfileService;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +20,10 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProfileDTO> getProfileDetails(@PathVariable(value = "id") UUID id){
+    @GetMapping("/{login}")
+    public ResponseEntity<ProfileDTO> getProfileDetails(@PathVariable(value = "login") String login){
 
-        ProfileDTO profileDTO = this.profileService.getProfile(id);
+        ProfileDTO profileDTO = this.profileService.getProfile(login);
 
         return  ResponseEntity.status(HttpStatus.OK).body(profileDTO);
     }

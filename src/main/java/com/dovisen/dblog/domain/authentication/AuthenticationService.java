@@ -1,5 +1,6 @@
-package com.dovisen.dblog.domain.user;
+package com.dovisen.dblog.domain.authentication;
 
+import com.dovisen.dblog.domain.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

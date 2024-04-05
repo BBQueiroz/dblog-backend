@@ -1,5 +1,8 @@
 package com.dovisen.dblog.controller;
 
+import com.dovisen.dblog.domain.authentication.AuthenticationDTO;
+import com.dovisen.dblog.domain.authentication.LoginResponseDTO;
+import com.dovisen.dblog.domain.authentication.RegisterDTO;
 import com.dovisen.dblog.domain.user.*;
 import com.dovisen.dblog.infra.TokenService;
 import jakarta.validation.Valid;
