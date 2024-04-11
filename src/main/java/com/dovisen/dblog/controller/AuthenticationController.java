@@ -1,6 +1,7 @@
 package com.dovisen.dblog.controller;
 
 import com.dovisen.dblog.domain.authentication.AuthenticationDTO;
+import com.dovisen.dblog.domain.authentication.AuthenticationService;
 import com.dovisen.dblog.domain.authentication.LoginResponseDTO;
 import com.dovisen.dblog.domain.authentication.RegisterDTO;
 import com.dovisen.dblog.domain.user.*;
@@ -23,12 +24,14 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
 
+    private final AuthenticationService authenticationService;
     private final UserRepository usersRepository;
 
     private final TokenService tokenService;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, UserRepository usersRepository, TokenService tokenService) {
+    public AuthenticationController(AuthenticationManager authenticationManager, AuthenticationService authenticationService, UserRepository usersRepository, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
+        this.authenticationService = authenticationService;
         this.usersRepository = usersRepository;
         this.tokenService = tokenService;
     }
@@ -48,12 +51,12 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerDto){
-        if (usersRepository.findByLogin(registerDto.login()) != null) return ResponseEntity.badRequest().body("Usuário já existe");
-
-        String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());
-        User newUser = new User(registerDto.login(), encryptedPassword, registerDto.role() );
-
-        usersRepository.save(newUser);
+        User newUser;
+        try {
+            newUser = authenticationService.registerUser(registerDto);
+        } catch(IllegalArgumentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }

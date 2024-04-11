@@ -18,11 +18,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -77,6 +75,13 @@ public class User implements UserDetails {
         this.login = login;
         this.password = encryptedPassword;
         this.role = role;
+        this.nickname = login;
+        this.biography = "";
+        this.email = "";
+        this.birthday = LocalDateTime.now();
+        this.followers = new ArrayList<>();
+        this.following = new ArrayList<>();
+        this.posts = new ArrayList<>();
     }
 
     @ManyToMany(mappedBy = "likes_list")
