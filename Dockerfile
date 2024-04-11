@@ -10,5 +10,5 @@ RUN mvn clean package
 FROM eclipse-temurin:17-jre-alpine
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY --from=build /usr/src/app/target/dblog-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /usr/src/app/target/dblog-0.0.2-SNAPSHOT.jar app.jar
 CMD ["java", "-jar", "app.jar"]
