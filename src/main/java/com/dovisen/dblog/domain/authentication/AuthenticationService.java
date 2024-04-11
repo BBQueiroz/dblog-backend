@@ -2,7 +2,12 @@ package com.dovisen.dblog.domain.authentication;
 
 import com.dovisen.dblog.domain.user.User;
 import com.dovisen.dblog.domain.user.UserRepository;
+import com.dovisen.dblog.infra.TokenService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,8 +19,14 @@ public class AuthenticationService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public AuthenticationService(UserRepository usersRepository) {
+    private final AuthenticationManager authenticationManager;
+
+    private final TokenService tokenService;
+
+    public AuthenticationService(UserRepository usersRepository, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.userRepository = usersRepository;
+        this.authenticationManager = authenticationManager;
+        this.tokenService = tokenService;
     }
 
 
@@ -26,6 +37,18 @@ public class AuthenticationService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return users;
+    }
+
+    public LoginResponseDTO login(AuthenticationDTO authenticationDto){
+        var usernamePassword = new UsernamePasswordAuthenticationToken(authenticationDto.login(), authenticationDto.password());
+
+        try {
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+            var token = tokenService.generateToken((User) auth.getPrincipal());
+            return new LoginResponseDTO(token);
+        } catch (AuthenticationException e) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public User registerUser(RegisterDTO registerDto){
