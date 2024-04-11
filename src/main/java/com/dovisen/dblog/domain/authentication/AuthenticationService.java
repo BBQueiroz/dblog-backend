@@ -19,14 +19,9 @@ public class AuthenticationService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final AuthenticationManager authenticationManager;
 
-    private final TokenService tokenService;
-
-    public AuthenticationService(UserRepository usersRepository, AuthenticationManager authenticationManager, TokenService tokenService) {
+    public AuthenticationService(UserRepository usersRepository) {
         this.userRepository = usersRepository;
-        this.authenticationManager = authenticationManager;
-        this.tokenService = tokenService;
     }
 
 
@@ -38,7 +33,7 @@ public class AuthenticationService implements UserDetailsService {
         }
         return users;
     }
-    
+
 
     public User registerUser(RegisterDTO registerDto){
         if (registerDto == null) throw new IllegalArgumentException("Registro inválido: RegisterDTO não pode ser nulo");
