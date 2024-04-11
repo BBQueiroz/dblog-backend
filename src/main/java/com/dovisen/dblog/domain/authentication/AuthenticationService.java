@@ -38,18 +38,7 @@ public class AuthenticationService implements UserDetailsService {
         }
         return users;
     }
-
-    public LoginResponseDTO login(AuthenticationDTO authenticationDto){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(authenticationDto.login(), authenticationDto.password());
-
-        try {
-            var auth = this.authenticationManager.authenticate(usernamePassword);
-            var token = tokenService.generateToken((User) auth.getPrincipal());
-            return new LoginResponseDTO(token);
-        } catch (AuthenticationException e) {
-            throw new IllegalArgumentException();
-        }
-    }
+    
 
     public User registerUser(RegisterDTO registerDto){
         if (registerDto == null) throw new IllegalArgumentException("Registro inválido: RegisterDTO não pode ser nulo");
