@@ -1,4 +1,4 @@
-package com.dovisen.dblog.domain.Journey;
+package com.dovisen.dblog.domain.journey;
 
 import com.dovisen.dblog.domain.user.User;
 import com.dovisen.dblog.domain.user.UserRepository;

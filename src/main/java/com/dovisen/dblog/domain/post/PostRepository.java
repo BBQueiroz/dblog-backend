@@ -2,9 +2,7 @@ package com.dovisen.dblog.domain.post;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.stereotype.Repository;
 
 import java.awt.print.Pageable;

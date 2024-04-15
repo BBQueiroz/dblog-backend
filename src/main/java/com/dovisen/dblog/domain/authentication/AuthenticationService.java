@@ -2,12 +2,6 @@ package com.dovisen.dblog.domain.authentication;
 
 import com.dovisen.dblog.domain.user.User;
 import com.dovisen.dblog.domain.user.UserRepository;
-import com.dovisen.dblog.infra.TokenService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

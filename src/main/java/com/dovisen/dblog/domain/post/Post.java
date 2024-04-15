@@ -49,7 +49,7 @@ public class Post {
     private Post parent;
 
     @Column
-    private Integer qtd_likes;
+    private Integer qtdLikes;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany
@@ -58,14 +58,14 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> likes_list;
+    private List<User> likeList;
 
     public Post(PostDTO postDTO){
         this.user = postDTO.user();
         this.title = postDTO.title();
         this.content = postDTO.content();
         this.data = LocalDateTime.now();
-        this.qtd_likes = 0;
-        this.likes_list = new ArrayList<>();
+        this.qtdLikes = 0;
+        this.likeList = new ArrayList<>();
     }
 }

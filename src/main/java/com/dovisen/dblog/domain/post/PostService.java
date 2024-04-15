@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+
+    private static final String USER_NOT_FOUND = "Usuário não encontrado";
+
     public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
@@ -28,7 +31,7 @@ public class PostService {
         Post post = new Post(postDTO);
         post.setUser((User) userRepository.findByLogin(authentication.getName()));
         if(postDTO.parent() != null) {
-            post.setParent(postRepository.findById(postDTO.parent()).get());
+            post.setParent(postRepository.findById(postDTO.parent()).orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND)));
         }
         return postRepository.save(post);
     }
@@ -37,15 +40,15 @@ public class PostService {
         return postRepository.existsByTitle(title);
     }
 
-    public List<Post> findAll() { return postRepository.findAll().stream().filter(post -> post.getParent() == null).collect(Collectors.toList()); }
+    public List<Post> findAll() { return postRepository.findAll().stream().filter(post -> post.getParent() == null).toList(); }
 
     public List<Post> findTopNPost(int limit){
         Pageable pageable = (Pageable) PageRequest.of(0, limit);
-        return postRepository.findTopNByData(pageable).stream().filter( post -> post.getParent() == null).collect(Collectors.toList());
+        return postRepository.findTopNByData(pageable).stream().filter( post -> post.getParent() == null).toList();
     }
 
     public List<Post> findComments(UUID id){
-        return postRepository.findAll().stream().filter(post -> post.getParent() != null && post.getParent() == postRepository.findById(id).get()).collect(Collectors.toList());
+        return postRepository.findAll().stream().filter(post -> post.getParent() != null && post.getParent() == postRepository.findById(id).get()).toList();
     }
     public void delete(UUID uuid){
         if(!postRepository.existsById(uuid)) throw new NullPointerException("404 Not Found");
@@ -57,41 +60,46 @@ public class PostService {
     }
     public Post changeLike(UUID id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
-        List<User> listUser = post.getLikes_list();
-        if(post.getQtd_likes() == null){
-            post.setQtd_likes(0);
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND));
+        List<User> listUser = post.getLikeList();
+        if(post.getQtdLikes() == null){
+            post.setQtdLikes(0);
         }
-        if(listUser.contains((User) userRepository.findByLogin(authentication.getName()))){
-            post.setQtd_likes(post.getQtd_likes() - 1);
-            listUser.remove((User) userRepository.findByLogin(authentication.getName()));
+        User usuarioEncontrado = (User) userRepository.findByLogin(authentication.getName());
+
+        if(listUser.contains(usuarioEncontrado)){
+            post.setQtdLikes(post.getQtdLikes() - 1);
+            listUser.remove(usuarioEncontrado);
 
             return post;
         }
-        post.setQtd_likes(post.getQtd_likes() + 1);
+        post.setQtdLikes(post.getQtdLikes() + 1);
         listUser.add((User) userRepository.findByLogin(authentication.getName()));
 
         return post;
     }
     public Post addLike(UUID id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND));
 
-        post.setQtd_likes(post.getQtd_likes() + 1);
-        List<User> listUser = post.getLikes_list();
+        post.setQtdLikes(post.getQtdLikes() + 1);
+        List<User> listUser = post.getLikeList();
         listUser.add((User) userRepository.findByLogin(authentication.getName()));
-        post.setLikes_list(listUser);
+        post.setLikeList(listUser);
 
         return post;
     }
     public Post removeLike(UUID id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        User usuarioEncontrado = (User) userRepository.findByLogin(authentication.getName());
 
-        post.setQtd_likes(post.getQtd_likes() - 1);
-        List<User> listUser = post.getLikes_list();
-        listUser.remove((User) userRepository.findByLogin(authentication.getName()));
-        post.setLikes_list(listUser);
+        Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND));
+        post.setQtdLikes(post.getQtdLikes() - 1);
+
+        List<User> listUser = post.getLikeList();
+        listUser.remove(usuarioEncontrado);
+
+        post.setLikeList(listUser);
 
         return post;
     }
@@ -101,6 +109,6 @@ public class PostService {
         if (postRepository.findById(id).isEmpty()){
             throw new NullPointerException("Não encontrado");
         }
-        return postRepository.findById(id).get();
+        return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException(USER_NOT_FOUND));
     }
 }

@@ -1,11 +1,8 @@
 package com.dovisen.dblog.controller;
 
-import com.dovisen.dblog.domain.Journey.JourneyDTO;
-import com.dovisen.dblog.domain.Journey.JourneyNode;
-import com.dovisen.dblog.domain.Journey.JourneyNodeService;
-import com.dovisen.dblog.domain.post.Post;
-import com.dovisen.dblog.domain.post.PostDTO;
-import jakarta.annotation.security.PermitAll;
+import com.dovisen.dblog.domain.journey.JourneyDTO;
+import com.dovisen.dblog.domain.journey.JourneyNode;
+import com.dovisen.dblog.domain.journey.JourneyNodeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +12,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/journey")
@@ -59,7 +55,7 @@ public class JourneyController {
                 .path("/{root}/{id}")
                 .buildAndExpand(savedJourney.getRoot().getId(), savedJourney.getId())
                 .toUri();
-        return ResponseEntity.status(HttpStatus.CREATED).body("201 Created");
+        return ResponseEntity.status(HttpStatus.CREATED).location(location).body("201 Created");
     }
 
 }

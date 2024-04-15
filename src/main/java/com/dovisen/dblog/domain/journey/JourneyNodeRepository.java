@@ -1,4 +1,4 @@
-package com.dovisen.dblog.domain.Journey;
+package com.dovisen.dblog.domain.journey;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.relational.core.mapping.Table;

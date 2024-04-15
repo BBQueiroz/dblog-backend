@@ -1,24 +1,20 @@
 package com.dovisen.dblog.domain.user;
 
 import com.dovisen.dblog.domain.post.Post;
+import com.dovisen.dblog.domain.post.PostSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -45,7 +41,7 @@ public class User implements UserDetails {
     private String nickname;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @JsonIgnore
+    @JsonSerialize(using = PostSerializer.class)
     private List<Post> posts;
 
     @Column(nullable = false)
@@ -84,7 +80,8 @@ public class User implements UserDetails {
         this.posts = new ArrayList<>();
     }
 
-    @ManyToMany(mappedBy = "likes_list")
+    @ManyToMany(mappedBy = "likeList")
+    @JsonSerialize(using = PostSerializer.class)
     private List<Post> likedPosts = new ArrayList<>();
 
     @Override
@@ -120,5 +117,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }
 

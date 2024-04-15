@@ -1,4 +1,4 @@
-package com.dovisen.dblog.domain.Journey;
+package com.dovisen.dblog.domain.journey;
 
 import com.dovisen.dblog.domain.user.User;
 import jakarta.persistence.*;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.UUID;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
