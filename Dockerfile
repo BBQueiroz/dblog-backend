@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY pom.xml .
 RUN mvn -B dependency:resolve dependency:resolve-plugins
 ADD . /usr/src/app
-RUN mvn -D maven.test.skip=true package
+RUN mvn install
 
 
 FROM eclipse-temurin:17-jre-alpine

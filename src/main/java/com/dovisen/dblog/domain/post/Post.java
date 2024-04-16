@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,10 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Post implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2405172041950251807L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
